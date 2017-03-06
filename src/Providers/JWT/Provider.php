@@ -143,6 +143,6 @@ abstract class Provider
      */
     public function getAlgo()
     {
-        return Arr::get($this->header, 'algo');
+        return Arr::get($this->header, 'alg');
     }
 }

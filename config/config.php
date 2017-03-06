@@ -134,8 +134,8 @@ return [
     */
 
     'header' => [
-        'type' => 'jwt',
-        'algo' => env('JWT_ALGO', 'HS256'),
+        'typ' => 'jwt',
+        'alg' => env('JWT_ALGO', 'RS256'),
         'kid' => null,
     ],
     /*
