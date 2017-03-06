@@ -30,17 +30,17 @@ class Namshi extends Provider implements JWT
 
     /**
      * @param  string  $secret
-     * @param  string  $algo
+     * @param  string  $header
      * @param  array  $keys
      * @param  string|null  $driver
      *
      * @return void
      */
-    public function __construct($secret, $algo, array $keys = [], $driver = null)
+    public function __construct($secret, array $header, array $keys = [], $driver = null)
     {
-        parent::__construct($secret, $keys, $algo);
+        parent::__construct($secret, $keys, $header);
 
-        $this->jws = $driver ?: new JWS(['typ' => 'JWT', 'alg' => $algo]);
+        $this->jws = $driver ?: new JWS($header);
     }
 
     /**

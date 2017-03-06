@@ -28,7 +28,7 @@ abstract class Provider
     /**
      * @var string
      */
-    protected $algo;
+    protected $header;
 
     /**
      * @param  string  $secret
@@ -37,23 +37,23 @@ abstract class Provider
      *
      * @return void
      */
-    public function __construct($secret, array $keys, $algo)
+    public function __construct($secret, array $keys, $header)
     {
         $this->secret = $secret;
         $this->keys = $keys;
-        $this->algo = $algo;
+        $this->header = $header;
     }
 
     /**
      * Set the algorithm used to sign the token.
      *
-     * @param  string  $algo
+     * @param  string  $header
      *
      * @return $this
      */
-    public function setAlgo($algo)
+    public function setHeader($header)
     {
-        $this->algo = $algo;
+        $this->header = $header;
 
         return $this;
     }
@@ -63,9 +63,9 @@ abstract class Provider
      *
      * @return string
      */
-    public function getAlgo()
+    public function getHeader()
     {
-        return $this->algo;
+        return $this->header;
     }
 
     /**
@@ -134,5 +134,15 @@ abstract class Provider
     public function getPassphrase()
     {
         return Arr::get($this->keys, 'passphrase');
+    }
+
+    /**
+     * Get the algorithm used to sign the token.
+     *
+     * @return string
+     */
+    public function getAlgo()
+    {
+        return Arr::get($this->header, 'algo');
     }
 }

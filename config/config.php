@@ -133,8 +133,11 @@ return [
     |
     */
 
-    'algo' => env('JWT_ALGO', 'HS256'),
-
+    'header' => [
+        'type' => 'jwt',
+        'algo' => env('JWT_ALGO', 'HS256'),
+        'kid' => null,
+    ],
     /*
     |--------------------------------------------------------------------------
     | Required Claims

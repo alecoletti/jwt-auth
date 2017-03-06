@@ -51,7 +51,7 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('sign')->once()->with('secret', null)->andReturn(Mockery::self());
         $this->jws->shouldReceive('getTokenString')->once()->andReturn('foo.bar.baz');
 
-        $token = $this->getProvider('secret', 'HS256')->encode($payload);
+        $token = $this->getProvider('secret', ['type'=>'jwt','algo'=>'HS256','kid'=>null])->encode($payload);
 
         $this->assertSame('foo.bar.baz', $token);
     }
@@ -67,7 +67,7 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('setPayload')->once()->with($payload)->andReturn(Mockery::self());
         $this->jws->shouldReceive('sign')->andThrow(new \Exception);
 
-        $this->getProvider('secret', 'HS256')->encode($payload);
+        $this->getProvider('secret', ['type'=>'jwt','algo'=>'HS256','kid'=>null])->encode($payload);
     }
 
     /** @test */
@@ -79,7 +79,7 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('verify')->once()->with('secret', 'HS256')->andReturn(true);
         $this->jws->shouldReceive('getPayload')->andReturn($payload);
 
-        $this->assertEquals($payload, $this->getProvider('secret', 'HS256')->decode('foo.bar.baz'));
+        $this->assertEquals($payload, $this->getProvider('secret', ['type'=>'jwt','algo'=>'HS256','kid'=>null])->decode('foo.bar.baz'));
     }
 
     /**
@@ -92,7 +92,7 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('verify')->once()->with('secret', 'HS256')->andReturn(false);
         $this->jws->shouldReceive('getPayload')->never();
 
-        $this->getProvider('secret', 'HS256')->decode('foo.bar.baz');
+        $this->getProvider('secret', ['type'=>'jwt','algo'=>'HS256','kid'=>null])->decode('foo.bar.baz');
     }
 
     /**
@@ -105,7 +105,7 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('verify')->never();
         $this->jws->shouldReceive('getPayload')->never();
 
-        $this->getProvider('secret', 'HS256')->decode('foo.bar.baz');
+        $this->getProvider('secret', ['type'=>'jwt','algo'=>'HS256','kid'=>null])->decode('foo.bar.baz');
     }
 
     /** @test */
@@ -113,7 +113,7 @@ class NamshiTest extends AbstractTestCase
     {
         $provider = $this->getProvider(
             'does_not_matter',
-            'RS256',
+            ['type'=>'jwt','algo'=>'RS256','kid'=>null],
             ['private' => $this->getDummyPrivateKey(), 'public' => $this->getDummyPublicKey()]
         );
 
@@ -133,7 +133,7 @@ class NamshiTest extends AbstractTestCase
     {
         $provider = $this->getProvider(
             'does_not_matter',
-            'ES256',
+            ['type'=>'jwt','algo'=>'ES256','kid'=>null],
             ['private' => $this->getDummyPrivateKey(), 'public' => $this->getDummyPublicKey()]
         );
 
@@ -153,7 +153,7 @@ class NamshiTest extends AbstractTestCase
     {
         $provider = $this->getProvider(
             'does_not_matter',
-            'RS256',
+            ['type'=>'jwt','algo'=>'RS256','kid'=>null],
             ['private' => $this->getDummyPrivateKey(), 'public' => $this->getDummyPublicKey()]
         );
 
@@ -177,12 +177,12 @@ class NamshiTest extends AbstractTestCase
         $this->jws->shouldReceive('load')->once()->with('foo.bar.baz', false)->andReturn(Mockery::self());
         $this->jws->shouldReceive('verify')->with('secret', 'AlgorithmWrong')->andReturn(true);
 
-        $this->getProvider('secret', 'AlgorithmWrong')->decode('foo.bar.baz');
+        $this->getProvider('secret', ['type'=>'jwt','algo'=>'AlgorithmWrong','kid'=>null])->decode('foo.bar.baz');
     }
 
-    public function getProvider($secret, $algo, array $keys = [])
+    public function getProvider($secret, array $header, array $keys = [])
     {
-        return new Namshi($secret, $algo, $keys, $this->jws);
+        return new Namshi($secret, $header, $keys, $this->jws);
     }
 
     public function getDummyPrivateKey()

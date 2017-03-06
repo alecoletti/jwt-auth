@@ -117,7 +117,7 @@ abstract class AbstractServiceProvider extends ServiceProvider
 
             return new $provider(
                 $this->config('secret'),
-                $this->config('algo'),
+                $this->config('header'),
                 $this->config('keys')
             );
         });

@@ -39,9 +39,9 @@ class ProviderTest extends AbstractTestCase
     /** @test */
     public function it_should_set_the_algo()
     {
-        $this->provider->setAlgo('HS512');
+        $this->provider->setHeader('HS512');
 
-        $this->assertSame('HS512', $this->provider->getAlgo());
+        $this->assertSame('HS512', $this->provider->getHeader());
     }
 
     /** @test */
